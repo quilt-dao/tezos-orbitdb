@@ -11,13 +11,13 @@ export default function Chat() {
     }, 1000);
   }, []);
 
-  let publicDB;
-  async function openDB() {
-    publicDB = await getDB(
-      "/orbitdb/zdpuAwnWHePSv4qnkCyH2FKJsvthJVHseYyHynuaDTMbYkhca/quilt"
-    );
-  }
-  openDB();
+  // let publicDB;
+  // async function openDB() {
+  //   publicDB = await getDB(
+  //     "/orbitdb/zdpuAwnWHePSv4qnkCyH2FKJsvthJVHseYyHynuaDTMbYkhca/quilt"
+  //   );
+  // }
+  // openDB();
 
   function OpenForm() {
     document.getElementById("myForm").style.display = "block";
@@ -36,15 +36,15 @@ export default function Chat() {
     } else {
       text = input.value;
     }
-    publicDB = await getDB(
-      "/orbitdb/zdpuAwnWHePSv4qnkCyH2FKJsvthJVHseYyHynuaDTMbYkhca/quilt"
+    const publicDB = await getDB(
+      "/orbitdb/zdpuB3Hq67P1fd2C6EBVGFH2qT3fCHYwHD1Tv5Rnjx5TW8jN3/tez"
     );
     let info = {};
     info["add"] = localStorage.getItem("wallet");
     const d = new Date().getTime();
     info["datetime"] = d.toString();
 
-    publicDB.put(JSON.stringify(info), text).then((input.value = ""));
+    publicDB.put(JSON.stringify(info), text);
   }
 
   let keys;
@@ -52,7 +52,7 @@ export default function Chat() {
   const Display = async () => {
     try {
       let publicDB = await getDB(
-        "/orbitdb/zdpuAwnWHePSv4qnkCyH2FKJsvthJVHseYyHynuaDTMbYkhca/quilt"
+        "/orbitdb/zdpuB3Hq67P1fd2C6EBVGFH2qT3fCHYwHD1Tv5Rnjx5TW8jN3/tez"
       );
 
       const data = publicDB.all;
