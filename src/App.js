@@ -1,5 +1,5 @@
 import React from "react";
-import { Pane } from "evergreen-ui";
+
 import { Route, Switch } from "react-router-dom";
 import Chat from "./components/Chat";
 import { actions, loadingState, StateProvider } from "./state";
@@ -42,10 +42,9 @@ function App() {
 
   return (
     <StateProvider initialState={initialState} reducer={reducer}>
-      <Pane background="tint1" height="100%">
-        <Navbar />
-        <Systems />
-      </Pane>
+      <Navbar />
+      <Systems />
+
       <Chat />
     </StateProvider>
   );
