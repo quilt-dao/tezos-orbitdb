@@ -4,13 +4,29 @@ import global from "../assets/global.png";
 import { data } from "../utils/tzkt";
 
 export default function Chat() {
-  function openForm() {
+  let interval;
+  useEffect(() => {
+    interval = setInterval(() => {
+      Display();
+    }, 1000);
+  }, []);
+
+  let publicDB;
+  async function openDB() {
+    publicDB = await getDB(
+      "/orbitdb/zdpuAwnWHePSv4qnkCyH2FKJsvthJVHseYyHynuaDTMbYkhca/quilt"
+    );
+  }
+  openDB();
+
+  function OpenForm() {
     document.getElementById("myForm").style.display = "block";
-    setInterval(Display, 50);
+    // setInterval(Display, 50);
   }
 
   function closeForm() {
     document.getElementById("myForm").style.display = "none";
+    return () => clearInterval(interval);
   }
   async function globalChat() {
     let input = document.getElementById("input");
@@ -20,15 +36,15 @@ export default function Chat() {
     } else {
       text = input.value;
     }
-    let publicDB = await getDB(
+    publicDB = await getDB(
       "/orbitdb/zdpuAwnWHePSv4qnkCyH2FKJsvthJVHseYyHynuaDTMbYkhca/quilt"
     );
     let info = {};
     info["add"] = localStorage.getItem("wallet");
     const d = new Date().getTime();
     info["datetime"] = d.toString();
-    publicDB.put(JSON.stringify(info), text);
-    document.getElementById("input").value = "";
+
+    publicDB.put(JSON.stringify(info), text).then((input.value = ""));
   }
 
   let keys;
@@ -65,24 +81,24 @@ export default function Chat() {
     //scroller
     window.scrollTo({
       top: document.documentElement.scrollHeight,
-      behavior: "auto",
+      behavior: "smooth",
       /* you can also use 'auto' behaviour 
          in place of 'smooth' */
     });
   };
-  let input = document.getElementById("input");
-  if (input) {
-    input.addEventListener("keypress", function (event) {
-      // If the user presses the "Enter" key on the keyboard
-      if (event.key === "Enter") {
-        // Cancel the default action, if needed
-        event.preventDefault();
-        // Trigger the button element with a click
-        // document.getElementById("send").click();
-        globalChat();
-      }
-    });
-  }
+  // let input = document.getElementById("input");
+  // if (input) {
+  //   input.addEventListener("keypress", function (event) {
+  //     // If the user presses the "Enter" key on the keyboard
+  //     if (event.key === "Enter") {
+  //       // Cancel the default action, if needed
+  //       event.preventDefault();
+  //       // Trigger the button element with a click
+  //       // document.getElementById("send").click();
+  //       globalChat();
+  //     }
+  //   });
+  // }
 
   const walletAdd = localStorage.getItem("wallet");
 
@@ -100,7 +116,7 @@ export default function Chat() {
           src={global}
           type="button"
           className="open-button"
-          onClick={() => openForm()}
+          onClick={() => OpenForm()}
         />
         <div className="chat-popup" id="myForm">
           <h1>Global Chat</h1>
