@@ -69,7 +69,6 @@ function Systems() {
             <StatusIndicator color="warning">OrbitDB</StatusIndicator>
           )}
         </Pane>
-        <GenKey />
       </Pane>
     </Pane>
   );

@@ -6,6 +6,7 @@ import { data } from "../utils/tzkt";
 export default function Chat() {
   function openForm() {
     document.getElementById("myForm").style.display = "block";
+    setInterval(Display, 50);
   }
 
   function closeForm() {
@@ -14,7 +15,7 @@ export default function Chat() {
   async function globalChat() {
     let input = document.getElementById("input");
     let text;
-    if (input.value == "") {
+    if (input.value === "") {
       return;
     } else {
       text = input.value;
@@ -27,7 +28,9 @@ export default function Chat() {
     const d = new Date().getTime();
     info["datetime"] = d.toString();
     publicDB.put(JSON.stringify(info), text);
+    document.getElementById("input").value = "";
   }
+
   let keys;
   let values;
   const Display = async () => {
@@ -35,9 +38,9 @@ export default function Chat() {
       let publicDB = await getDB(
         "/orbitdb/zdpuAwnWHePSv4qnkCyH2FKJsvthJVHseYyHynuaDTMbYkhca/quilt"
       );
-      await publicDB.load();
+
       const data = publicDB.all;
-      console.log();
+
       keys = Object.keys(data);
       values = Object.values(data);
       document.getElementById("txt").innerHTML = "";
@@ -58,6 +61,7 @@ export default function Chat() {
     } catch (error) {
       console.log(error);
     }
+
     //scroller
     window.scrollTo({
       top: document.documentElement.scrollHeight,
@@ -66,11 +70,20 @@ export default function Chat() {
          in place of 'smooth' */
     });
   };
-
-  setTimeout(Pause, 4000);
-  function Pause() {
-    setInterval(Display, 500);
+  let input = document.getElementById("input");
+  if (input) {
+    input.addEventListener("keypress", function (event) {
+      // If the user presses the "Enter" key on the keyboard
+      if (event.key === "Enter") {
+        // Cancel the default action, if needed
+        event.preventDefault();
+        // Trigger the button element with a click
+        // document.getElementById("send").click();
+        globalChat();
+      }
+    });
   }
+
   const walletAdd = localStorage.getItem("wallet");
 
   const [key, setKey] = useState(false);
@@ -102,11 +115,17 @@ export default function Chat() {
               id="input"
             />
 
-            <input type="button" onClick={() => globalChat()} value="Send" />
+            <input
+              type="button"
+              className="button"
+              onClick={() => globalChat()}
+              value="Send"
+              id="send"
+            />
 
             <button
               type="button"
-              className="btn cancel"
+              className="button"
               onClick={() => closeForm()}
             >
               Close

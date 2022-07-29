@@ -16,8 +16,12 @@ import { getId, createDB, getDB } from "../database/index";
 export const generateKeys = async () => {
   let id = await getId();
   const x = id.publicKey;
+  let name = Math.random() * 10 ** 17;
 
-  let db = await createDB(id.publicKey, "feed", "public");
+  name = name.toString();
+  console.log(name);
+
+  let db = await createDB(name, "feed", "public");
   const y = db.address.toString();
 
   try {
